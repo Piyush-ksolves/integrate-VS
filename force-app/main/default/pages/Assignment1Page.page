@@ -1,0 +1,67 @@
+<apex:page controller="AssignmentHandler1">
+    <p>
+        <apex:form style="font-size:16px;height:32px;"> 
+            <!-- SELECT INSTITUTE  -->
+            <H1 style="align: center">Select Institute:</H1>
+            <apex:selectList size="1" value="{!selectedInstitute }">
+                <apex:selectOptions value="{!AllInstituteRecords}" />
+                <apex:actionSupport event="onchange" action="{!fetchAllMentor}" reRender="mntor_list"/>
+            </apex:selectList>  
+        </apex:form>
+    </p>
+    
+    <!-- SELECT MENTORS -->
+    <apex:form >
+        <apex:outputPanel id="mntor_list">
+            <apex:outputPanel layout="none" rendered="{!NOT(ISNULL(selectedInstitute))}">
+                <H1 style="font-size:16px;height:32px;" >All Mentors</H1>
+                <table style="width: 100%" border="1px" cellpadding="8" cellspacing="0" align="center" >
+                    <tr style="font-size:16px;height:32px; padding: 15px;">
+                        <th  Colspan = "2">MENTOR NAME</th>
+                        <th  Colspan = "3">MENTOR DESIGNATION</th>
+                    </tr>
+                    <apex:repeat value="{!mentorData}" var="mntor">
+                        <tr style="padding: 15px;">
+                            <td style="width: 50%" Colspan = "2">
+                                <apex:commandLink value="{!mntor.Name}" action="{!getStudentsDetails}">
+                                    <apex:param name="mentorName" value="{!mntor.Id}" assignTo="{!mentorName}"/>    
+                                </apex:commandLink>
+                            </td>
+                            <td style="width: 50%" Colspan = "3">
+                                {!mntor.designation__c}
+                            </td>
+                        </tr>
+                        <!-- MENTOR RELATED STUDENTS-->
+                        <apex:outputPanel rendered="{!IF(sameMentor,false,true)}">
+                            <apex:outputPanel rendered="{!IF(mntor.Id == mentorName,true,false)}" id="studntLst">
+                                <tr style="font-size:12px;height:22px; padding: 15px; ">
+                                    <th style="width: 20%" rowspan="{!numberOfStudents}"> </th>
+                                    <th style="width: 20%">STUDENT NAME</th>
+                                    <th style="width: 20%" >CLASS</th>
+                                    <th style="width: 20%">CITY</th>
+                                    <th style="width: 20%">STATE</th>
+                                </tr>
+                                <apex:repeat value="{!studentData}" var="student">
+                                    <tr style="padding: 15px;" >
+                                        <td >
+                                            {!student.Name}
+                                        </td>
+                                        <td >
+                                            {!student.Class__c}
+                                        </td >
+                                        <td >
+                                            {!student.City__c}
+                                        </td>
+                                        <td >
+                                            {!student.State__c}
+                                        </td>
+                                    </tr>
+                                </apex:repeat>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:repeat>
+                </table>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

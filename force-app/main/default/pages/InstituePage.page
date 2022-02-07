@@ -1,0 +1,25 @@
+<apex:page controller="Institute">
+    
+    <apex:form id="Institute_list">
+    	<apex:selectList size="1" value="{!deatils}">
+            <apex:selectOptions value="{!ITems}"/>
+            <apex:actionSupport event="onchange" action="{!m_List}" rendered="Institute_list"/>
+        </apex:selectList>  
+        
+        <apex:inputText title="ALL MENTORS" id="Institute_list"/>
+            <table>
+                <tr>
+                    <th>Mentor Name</th>
+                    <th>Designation</th>
+                </tr>
+                
+                <apex:repeat value="{!mentorList}" var="ct">
+                    <tr>
+                        <td>{!ct.Name}</td>
+                        <td></td>
+                    </tr>
+              	</apex:repeat>
+            </table>
+      
+    </apex:form>
+</apex:page>

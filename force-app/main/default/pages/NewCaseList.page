@@ -1,0 +1,21 @@
+<apex:page controller="NewCaseListController" >
+    <apex:pageBlock title="Case List with Status equal New">
+        <apex:form >
+            <apex:pageBlockSection >
+                <!-- Case List with Status=New --> 
+                Filter:
+                <apex:selectList size="1" value="{!casestatusvalue }">
+                    <apex:selectOptions value="{!casestatusfield}"/>
+                    <apex:actionSupport event="onchange" reRender="cases_list"/>
+                </apex:selectList>  
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="cases_list">
+                <apex:repeat value="{!NewCases}" var="case">
+                    <apex:outputLink value="/{!case.ID}">
+                        <apex:outputText value="{!case.casenumber}"/>
+                    </apex:outputLink> 
+                </apex:repeat> 
+            </apex:pageBlockSection>                                                
+        </apex:form>
+    </apex:pageBlock> 
+</apex:page>

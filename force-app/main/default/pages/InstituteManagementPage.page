@@ -1,0 +1,64 @@
+<apex:page controller="InstituteManagementHandler">
+    <apex:form >
+        <!-- Case List with Status=New --> 
+        Filter:
+        <apex:selectList size="1" value="{!institutesrecordvalue }">
+            <apex:selectOptions value="{!AllInstituteRecords}" />
+            <apex:actionSupport event="onchange"  reRender="mntor_list"/>
+        </apex:selectList>  
+    </apex:form>
+    
+    <apex:form >
+        <apex:actionFunction action="{!getFetchStudents}" name="mentorStudent" rerender="mntor_list">
+            <apex:param name="selectedId" value="" assignTo="{!mntorName}" /> 
+        </apex:actionFunction>
+        
+        <apex:outputPanel id="mntor_list">
+            <apex:outputPanel >
+                <H1>All Mentors</H1>
+                <table style="width: 100%" border="1px" cellpadding="8" cellspacing="0" align="center" >
+                    <tr style="font-size:16px;height:32px; padding: 15px;">
+                        <th  Colspan = "2">NAME</th>
+                        <th  Colspan = "3">DESIGNATION</th>
+                    </tr>
+                    <apex:repeat value="{!FetchAllMentors}" var="mntor">
+                        <tr style="padding: 15px;">
+                            <td style="width: 50%" Colspan = "2">
+                                <a onclick="mentorStudent('{!mntor.Id}');">
+                                    {!mntor.Name}
+                                </a>
+                            </td>
+                            <td style="width: 50%" Colspan = "3">
+                                {!mntor.designation__c}
+                            </td>
+                        </tr>
+                        <!--student table -->                   
+                        <tr style="font-size:12px;height:22px; padding: 15px; ">
+                            <th style="width: 20%" rowspan="{!numberOfStu}"> </th>
+                            <th style="width: 20%">STUDENT NAME</th>
+                            <th style="width: 20%" >CLASS</th>
+                            <th style="width: 20%">CITY</th>
+                            <th style="width: 20%">STATE</th>
+                        </tr>
+                        <apex:repeat value="{!FetchAllStudents}" var="studnt">
+                            <tr style="padding: 15px;" >
+                                <td >
+                                    {!studnt.Name}
+                                </td>
+                                <td >
+                                    {!studnt.Id}
+                                </td >
+                                <td >
+                                    {!studnt.City__c}
+                                </td>
+                                <td >
+                                    {!studnt.State__c}
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </apex:repeat>
+                </table>   
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

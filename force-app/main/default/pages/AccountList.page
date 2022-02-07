@@ -1,0 +1,111 @@
+<!--<apex:page standardController="Account" recordSetVar="accounts">
+<apex:form >
+<apex:pageBlock title="Accounts List">
+<apex:repeat value="{!accounts}" var="a">
+<li>
+<apex:outputLink value="/{!a.ID}" >
+{!a.Name}
+</apex:outputLink>
+</li>
+</apex:repeat>
+</apex:pageBlock>
+</apex:form>
+</apex:page>
+-->
+
+<!-- For this example to render fully, associate the page
+with a valid account record in the URL.
+For example: https://Salesforce_instance/apex/myPage?id=001D000000IRt53 -->
+
+<!-- Page: -->
+
+<!--
+<apex:page controller="InstituteManagementHandler">
+    <apex:form style="align: center">
+       
+        Filter:
+        <apex:selectList size="1" value="{!institutesrecordvalue }">
+            <apex:selectOptions value="{!AllInstituteRecords}" />
+            <apex:actionSupport event="onchange" reRender="tableRefresh"/>
+        </apex:selectList>  
+    </apex:form>
+    
+    <apex:form id="tablledata">
+        <apex:dataTable value="{!FetchAllMentors}" var="mntors" id="tableRefresh"
+                        styleClass="tableClass" border="4"  align="center" cellpadding="8" rowClasses="rowWithBorder">
+            <apex:facet name="header">All Mentors</apex:facet>
+            <apex:column >
+                <apex:facet name="header">Mentor Name</apex:facet>
+                <apex:outputLink value="/{!mntors.ID}" >
+                    <apex:outputText value="{!mntors.name}"/>
+                </apex:outputLink>
+            </apex:column>
+            
+            <apex:column >
+                <apex:facet name="header">Designation</apex:facet>
+                <apex:outputText value="{!mntors.Designation__c}"/>
+            </apex:column>
+        </apex:dataTable>
+    </apex:form>
+</apex:page> -->
+
+<apex:page controller="AssignmentHandler1">
+    <apex:form >
+        <p></p>
+        <apex:selectList size="1" value="{!selectedinstitute}"  > 
+            <apex:actionSupport event="onchange" action="{!fetchAllMentor}" reRender="ParentTable" />
+            <apex:selectOption itemLabel="None" itemValue=""></apex:selectOption>
+            <apex:selectOptions value="{!AllInstituteRecords}"  /> 
+            
+        </apex:selectList>
+       <p></p>
+        <apex:outputPanel id="ParentTable">
+        <apex:outputPanel layout="none" rendered="{!NOT(ISNULL(selectedinstitute))}">
+        <table border="1" width="50%">
+            <tr>
+            	<td width = "50%">Mentor Name</td>
+            	<td width = "50%">Designation</td>
+        	</tr>
+            <apex:repeat value="{!mentorData}" var="mentor"> 
+                <tr>
+                    <td width = "50%">
+                        <apex:commandLink value="{!mentor.Name}" action="{!getStudentsDetails}" >
+                        	<apex:param name="mentorName" value="{!mentor.Id}"  assignTo="{!mentorName}"/>
+                		</apex:commandLink>
+                    </td> 
+                    <td width = "50%">{!mentor.Designation__c}</td>
+                 </tr>
+                <apex:outputPanel >
+                <apex:outputPanel layout="none" rendered="{!IF(mentor.Id == mentorName ,true,false)}" id="showthestudents">
+                    <tr>
+                        <td colspan="2">
+                	<table border="1" width="90%" id="theTable" style="margin-top:10px; margin-left:10px;margin-bottom:10px;">
+                        <tr>
+                            <th width = "25%">Student Name</th>
+                             <th width = "25%">Class</th>
+                            <th width = "25%">City</th>
+                            <th width = "25%">State</th>
+                        </tr>
+                   
+                        <apex:repeat value="{!studentData}" var="student" >
+                            <tr>
+                                <td>{!student.Name}</td>
+                                <td>{!student.Id}</td>
+                                <td>{!student.City__c}</td>
+                                <td>{!student.State__c}</td> 
+                            </tr>
+                        </apex:repeat>
+                            
+        			</table>
+                        </td>
+                </tr> 
+                        
+                </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:repeat> 
+        </table>
+            </apex:outputPanel>
+            </apex:outputPanel>
+        <p></p>
+    </apex:form>
+</apex:page>
